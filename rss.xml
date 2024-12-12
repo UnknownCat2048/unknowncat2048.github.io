@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>UnknownCat2048</title><description>Blog</description><link>https://unknowncat2048.github.io/</link><language>zh_CN</language><item><title>Unity 编辑器扩展（1）：入门</title><link>https://unknowncat2048.github.io/posts/unity-editor-extension-1/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/unity-editor-extension-1/</guid><description>初步了解 Unity 编辑器扩展</description><pubDate>Mon, 09 Dec 2024 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;Unity 允许通过自定义 &lt;code&gt;Inspector&lt;/code&gt; 和 &lt;code&gt;编辑器窗口&lt;/code&gt;  来扩展编辑器。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Unity 编辑器扩展大致分为以下几类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;菜单栏扩展
+&lt;ul&gt;
+&lt;li&gt;顶部栏菜单扩展&lt;/li&gt;
+&lt;li&gt;右键菜单扩展&lt;/li&gt;
+&lt;li&gt;组件新建菜单扩展&lt;/li&gt;
+&lt;li&gt;组件菜单扩展&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;编辑器窗口扩展
+&lt;ul&gt;
+&lt;li&gt;自定义编辑器窗口&lt;/li&gt;
+&lt;li&gt;自定义 Inspector 窗口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;工具栏扩展&lt;/li&gt;
+&lt;li&gt;Gizmos&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;编辑器相关文件需要放到相关&lt;a href=&quot;https://docs.unity.cn/cn/2020.3/Manual/SpecialFolders.html&quot;&gt;特殊文件夹&lt;/a&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Editor&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;编辑器扩展相关脚本需要放置在 &lt;code&gt;Editor&lt;/code&gt; 文件夹中，该文件夹内的脚本将以编辑器脚本的形式运行。&lt;/li&gt;
+&lt;li&gt;该文件夹内的脚本不会被打包到最终的项目中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Editor Default Resources&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;该文件夹用于存放编辑器扩展脚本要用的资源，如图片、音频等。使用 &lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/EditorGUIUtility.Load.html&quot;&gt;EditorGUIUtility.Load&lt;/a&gt; 方法从该文件夹中读取所需资源。&lt;/li&gt;
+&lt;li&gt;也可以在 &lt;code&gt;Editor&lt;/code&gt; 文件夹中创建 &lt;code&gt;Resources&lt;/code&gt; 文件夹，并将所需资源放入其中。同样使用&lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/EditorGUIUtility.Load.html&quot;&gt;EditorGUIUtility.Load&lt;/a&gt; 方法读取所需资源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Gizmos&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;用于存放 &lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/Gizmos.html&quot;&gt;Gizmos&lt;/a&gt; 所需的图片。使用 &lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/Gizmos.DrawIcon.html&quot;&gt;Gizmos.DrawIcon&lt;/a&gt;  读取所需图片并绘制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item></channel></rss>
