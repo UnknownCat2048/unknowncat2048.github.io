@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>UnknownCat2048</title><description>Blog</description><link>https://unknowncat2048.github.io/</link><language>zh_CN</language><item><title>Unity 编辑器扩展（3）：组件菜单栏扩展</title><link>https://unknowncat2048.github.io/posts/unity-editor-extension-3/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/unity-editor-extension-3/</guid><description>在 Unity 编辑器的组件新建菜单和组件菜单中添加自定义扩展</description><pubDate>Mon, 16 Dec 2024 11:54:00 GMT</pubDate><content:encoded>&lt;h2&gt;组件新建菜单扩展&lt;/h2&gt;
+&lt;p&gt;默认情况下，我们自己编写的脚本会被放置在 “Component &amp;gt; Scripts” 中。使用 &lt;code&gt;“[AddComponentMenu(string menuName)]”&lt;/code&gt; 特性标记脚本可以指定脚本在 Component 菜单中的路径。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[AddComponentMenu(&quot;Test/TestAddComponentMenu&quot;)]
+public class TestAddComponentMenu : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!Note]&lt;/p&gt;
+&lt;p&gt;根据官方 API 文档的说法，需要重新启动才可以生效，但是在实际使用中修改完成就可生效。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;该特性也提供另一个重载 &lt;code&gt;“[addComponentMenu(string menuName, int order)]”&lt;/code&gt; 用以对同一路径下的同级脚本进行排序，&lt;code&gt;order&lt;/code&gt; 的值越大排序越靠下。&lt;/p&gt;
+&lt;h2&gt;组件菜单扩展&lt;/h2&gt;
+&lt;h3&gt;ContextMenu&lt;/h3&gt;
+&lt;p&gt;该特性用于自定义扩展脚本在 Inspector 窗口中的右键菜单，通常用于快捷的设置数据。该特性需要标记脚本内的非静态方法。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TestMonoBehaviour : MonoBehaviour
+{
+    public int Num = 0;
+
+    [ContextMenu(&quot;Reset Num&quot;)]
+    private void ResetNum()
+    {
+        Num = 1;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;该特性接受三个参数 &lt;code&gt;“[ContextMenu(string itemName, bool isValidateFunction, int priority)]”&lt;/code&gt;，可参照&lt;a href=&quot;https://unknowncat2048.github.io/posts/unity-editor-extension-2/&quot;&gt;《Unity 编辑器扩展（2）：视图菜单栏扩展》&lt;/a&gt;。&lt;/p&gt;
+&lt;h3&gt;ContextMenuItem&lt;/h3&gt;
+&lt;p&gt;该特性可将自定义方法添加到字段的右键菜单中。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TestMonoBehaviour : MonoBehaviour
+{
+    [ContextMenuItem(&quot;Reset Num&quot;, &quot;ResetNum&quot;)]
+    public int Num = 0;
+
+    private void ResetNum()
+    {
+        Num = 1;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;该特性有两个参数，一个变量：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命名&lt;/th&gt;
+&lt;th&gt;类型&lt;/th&gt;
+&lt;th&gt;类别&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;name&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;参数&lt;/td&gt;
+&lt;td&gt;在右键菜单中的名称&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;function&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;参数&lt;/td&gt;
+&lt;td&gt;要执行的方法&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;order&lt;/td&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;td&gt;变量&lt;/td&gt;
+&lt;td&gt;在右键菜单中的排序&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre&gt;&lt;code&gt;[ContextMenuItem(string Name, string function, 属性: [order = int])]
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>Unity 编辑器扩展（2）：视图菜单栏扩展</title><link>https://unknowncat2048.github.io/posts/unity-editor-extension-2/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/unity-editor-extension-2/</guid><description>在 Unity 编辑器的顶部栏菜单、Hierarchy 窗口右键菜单、Project 窗口右键菜单中添加自定义扩展</description><pubDate>Mon, 16 Dec 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;顶部栏菜单扩展&lt;/h2&gt;
+&lt;p&gt;Unity 默认的顶部菜单栏如下图，我们可以在这里添加我们自己的工具。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2024/12/12/bg8LowY7KMjihWr.png&quot; alt=&quot;image-20241212110536096&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;使用 &lt;code&gt;MenuItem&lt;/code&gt; 特性标记一个静态方法就可以在顶部栏添加自定义工具。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using UnityEditor;
+using UnityEngine;
+
+public class TopbarExtension
+{
+    [MenuItem(&quot;Tool/Custom_1&quot;)]
+    public static void Custom_1()
+    {
+        Debug.Log(&quot;TopbarExtension : Custom_1&quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;等待编译完成后就可以在顶部栏看到我们的自定义工具，点击后就会执行 &lt;code&gt;Custom_1&lt;/code&gt; 方法。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2024/12/12/1K2aqOEocdx7p95.png&quot; alt=&quot;image-20241212150031061&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;MenuItem&lt;/code&gt; 可传入三个参数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[MenuItem(string itemName, bool isValidateFunction, int priority)]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th&gt;类型&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;itemName&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;string&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;工具在菜单中的路径&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;isValidateFunction&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;bool&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;是否用作相同 &lt;code&gt;itemName&lt;/code&gt; 方法的验证方法&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;priority&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;int&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;工具在菜单中的优先级，默认值：1000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;itemName&lt;/h3&gt;
+&lt;p&gt;该参数接受一个 &lt;strong&gt;string&lt;/strong&gt; 类型参数，用来表示该工具在顶部栏中的路径，通过 “/” 字符分割父子级。&lt;/p&gt;
+&lt;h3&gt;isValidateFunction&lt;/h3&gt;
+&lt;p&gt;该参数接受一个 &lt;strong&gt;bool&lt;/strong&gt; 类型参数，传入 &lt;strong&gt;true&lt;/strong&gt; 时表示该方法为验证方法。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;验证方法会在具有相同 &lt;code&gt;itemName&lt;/code&gt; 方法之前执行。&lt;/li&gt;
+&lt;li&gt;验证方法必须返回 &lt;strong&gt;bool&lt;/strong&gt; 才可以生效。&lt;/li&gt;
+&lt;li&gt;具体效果为返回 false 时，&lt;code&gt;itemName&lt;/code&gt; 对应的菜单栏选项变为不可选状态。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;using UnityEditor;
+using UnityEngine;
+
+public class TopbarExtension
+{
+    [MenuItem(&quot;Tool/Custom_1&quot;, false)]
+    public static void Custom_1()
+    {
+        Debug.Log(&quot;TopbarExtension : Custom_1&quot;);
+    }
+
+    [MenuItem(&quot;Tool/Custom_1&quot;, true)]
+    public static bool Custom_2()
+    {
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;通过验证方法可以对工具执行的条件进行判断，防止在非预期的情况下运行。&lt;/p&gt;
+&lt;h3&gt;priority&lt;/h3&gt;
+&lt;p&gt;该参数接受一个 &lt;strong&gt;int&lt;/strong&gt; 类型参数，用来决定该选项在菜单栏选项中的排列位置。默认值为 1000&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;菜单列表中处于同一级的不同方法之间会比较 &lt;code&gt;priority&lt;/code&gt; 的值，有较大的值的选项会排在有较小值的选项的下面。&lt;/li&gt;
+&lt;li&gt;当两个选项的 &lt;code&gt;priority&lt;/code&gt; 的值相差超过 10(&amp;gt;=11) 时，会在两个选项之间显示一条分割线。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;快捷键&lt;/h3&gt;
+&lt;p&gt;可以在 &lt;code&gt;itemName&lt;/code&gt; 中设置该方法的快捷键。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using UnityEditor;
+using UnityEngine;
+
+public class TopbarExtension
+{
+    [MenuItem(&quot;Tool/Custom_1 %#d&quot;, false)]
+    public static void Custom_1()
+    {
+        Debug.Log(&quot;TopbarExtension : Custom_1&quot;);
+    }
+
+    [MenuItem(&quot;Tool/Custom_1 %#d&quot;, true)]
+    public static bool Custom_2()
+    {
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上述代码我们通过一个空格字符区分路径文本和快捷键文本，为选项添加了一个快捷键。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;%#d&lt;/code&gt; 将会被解释为 &amp;lt;kbd&amp;gt;ctrl&amp;lt;/kbd&amp;gt;+&amp;lt;kbd&amp;gt;shift&amp;lt;/kbd&amp;gt;+&amp;lt;kbd&amp;gt;D&amp;lt;/kbd&amp;gt;。如果不需要特殊按键则需要以下划线开始，例如 &lt;code&gt;“Tool/Custom_1 _d”&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;Unity 支持多个特殊的按键，以下是他们的对应关系：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;快捷键文本&lt;/th&gt;
+&lt;th&gt;对应的按键&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;%&lt;/td&gt;
+&lt;td&gt;在 Windows 上表示 &amp;lt;kbd&amp;gt;ctrl&amp;lt;/kbd&amp;gt;，在 macOS 上表示 &amp;lt;kbd&amp;gt;cmd&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;#&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;shift&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;amp;&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;alt&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LEFT&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;←&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RIGHT&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;→&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;UP&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;↑&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DOWN&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;↓&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;F1 .. F12&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;F1&amp;lt;/kbd&amp;gt;..&amp;lt;kbd&amp;gt;F12&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HOME&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;home&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;END&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;end&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PGUP&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;page up&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PGDN&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;page down&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;右键菜单扩展&lt;/h2&gt;
+&lt;h3&gt;Hierarchy 窗口右键菜单&lt;/h3&gt;
+&lt;p&gt;Hierarchy 窗口的右键菜单对应着顶部菜单栏 &lt;code&gt;GameObject&lt;/code&gt;，使用 &lt;code&gt;[MenuItem(&quot;GameObject/Custom_3&quot;)]&lt;/code&gt; 即可将方法显示在 Hierarchy 窗口的右键菜单中。&lt;/p&gt;
+&lt;h3&gt;Project 窗口右键菜单&lt;/h3&gt;
+&lt;p&gt;Project 窗口的右键菜单对应着顶部菜单栏 &lt;code&gt;Assets&lt;/code&gt;，使用 &lt;code&gt;[MenuItem(&quot;Assets/Custom_4&quot;)]&lt;/code&gt; 即可将方法显示在 Project  窗口的右键菜单中。&lt;/p&gt;
+</content:encoded></item><item><title>Unity 编辑器扩展（1）：入门</title><link>https://unknowncat2048.github.io/posts/unity-editor-extension-1/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/unity-editor-extension-1/</guid><description>初步了解 Unity 编辑器扩展</description><pubDate>Mon, 09 Dec 2024 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;Unity 允许通过自定义 &lt;code&gt;Inspector&lt;/code&gt; 和 &lt;code&gt;编辑器窗口&lt;/code&gt;  来扩展编辑器。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Unity 编辑器扩展大致分为以下几类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;菜单栏扩展
+&lt;ul&gt;
+&lt;li&gt;顶部栏菜单扩展&lt;/li&gt;
+&lt;li&gt;右键菜单扩展&lt;/li&gt;
+&lt;li&gt;组件新建菜单扩展&lt;/li&gt;
+&lt;li&gt;组件菜单扩展&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;编辑器窗口扩展
+&lt;ul&gt;
+&lt;li&gt;自定义编辑器窗口&lt;/li&gt;
+&lt;li&gt;自定义 Inspector 窗口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;工具栏扩展&lt;/li&gt;
+&lt;li&gt;Gizmos&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;编辑器相关文件需要放到相关&lt;a href=&quot;https://docs.unity.cn/cn/2020.3/Manual/SpecialFolders.html&quot;&gt;特殊文件夹&lt;/a&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Editor&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;编辑器扩展相关脚本需要放置在 &lt;code&gt;Editor&lt;/code&gt; 文件夹中，该文件夹内的脚本将以编辑器脚本的形式运行。&lt;/li&gt;
+&lt;li&gt;该文件夹内的脚本不会被打包到最终的项目中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Editor Default Resources&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;该文件夹用于存放编辑器扩展脚本要用的资源，如图片、音频等。使用 &lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/EditorGUIUtility.Load.html&quot;&gt;EditorGUIUtility.Load&lt;/a&gt; 方法从该文件夹中读取所需资源。&lt;/li&gt;
+&lt;li&gt;也可以在 &lt;code&gt;Editor&lt;/code&gt; 文件夹中创建 &lt;code&gt;Resources&lt;/code&gt; 文件夹，并将所需资源放入其中。同样使用&lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/EditorGUIUtility.Load.html&quot;&gt;EditorGUIUtility.Load&lt;/a&gt; 方法读取所需资源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Gizmos&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;用于存放 &lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/Gizmos.html&quot;&gt;Gizmos&lt;/a&gt; 所需的图片。使用 &lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/Gizmos.DrawIcon.html&quot;&gt;Gizmos.DrawIcon&lt;/a&gt;  读取所需图片并绘制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item></channel></rss>
