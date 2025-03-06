@@ -1,0 +1,1078 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>UnknownCat2048</title><description>Blog</description><link>https://unknowncat2048.github.io/</link><language>zh_CN</language><item><title>如何使用国际版 Unity</title><link>https://unknowncat2048.github.io/posts/how-to-escape-unity-china/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/how-to-escape-unity-china/</guid><description>了解如何避免“Unity中国”并使用国际版 Unity Hub 以及 Unity Editor</description><pubDate>Sun, 23 Feb 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;下载安装国际版 Unity Hub&lt;/h2&gt;
+&lt;p&gt;通过访问 国际版 Unity Hub &lt;a href=&quot;https://unity.com/cn/download&quot;&gt;下载网页&lt;/a&gt;进行下载，也可以直接通过&lt;a href=&quot;https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.exe&quot;&gt;下载链接&lt;/a&gt;下载。&lt;/p&gt;
+&lt;h2&gt;避免网页重定向&lt;/h2&gt;
+&lt;p&gt;在不使用魔法的情况下，尝试访问 &lt;strong&gt;unity.com&lt;/strong&gt; 会跳转到 &lt;strong&gt;unity.cn&lt;/strong&gt;。包括在使用国际版 Unity Hub 进行登录时也会将 &lt;strong&gt;.com&lt;/strong&gt; 的登录链接重定向为 &lt;strong&gt;.cn&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;此时就需要魔法上网，以 &lt;code&gt;Clash&lt;/code&gt; 为例，通过添加对应的代理规则强行代理 &lt;code&gt;unity.com&lt;/code&gt; 和 &lt;code&gt;unity3d.com&lt;/code&gt; 域名，防止自动跳转。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;- DOMAIN-SUFFIX,unity.com,&amp;lt;YOUR_PROXY_GROUP_NAME&amp;gt;
+- DOMAIN-SUFFIX,unity3d.com,&amp;lt;YOUR_PROXY_GROUP_NAME&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;直接修改 Profile 文件虽然可以正常使用，但是在 Profile 文件手动/自动更新后就会覆盖掉我们的修改，每次更新后都需要再次修改，非常麻烦。&lt;/p&gt;
+&lt;p&gt;此时可以使用 &lt;code&gt;Clash&lt;/code&gt; 的 &lt;code&gt;Parsers&lt;/code&gt; 功能，该功能可以在 Profile 文件更新完成后，对指定的 Profile 文件进行处理。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;parsers: # array
+  - url: &amp;lt;YOUR_PROFILE_URL&amp;gt;
+    yaml:
+      prepend-rules:
+        - DOMAIN-SUFFIX,unity.com,&amp;lt;YOUR_PROXY_GROUP_NAME&amp;gt;
+        - DOMAIN-SUFFIX,unity3d.com,&amp;lt;YOUR_PROXY_GROUP_NAME&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;完成 Parsers 的修改后，手动更新一下 Profile 即可立刻生效，此时访问 Unity 官网就会不再重定向了。&lt;/p&gt;
+&lt;h2&gt;代理 Unity Hub&lt;/h2&gt;
+&lt;p&gt;尽管我们对 Unity 相关域名进行了强制代理，但是在直接运行国际版 Unity Hub 并尝试登陆时，跳转到的登陆页面仍然被重定向至 &lt;strong&gt;.cn&lt;/strong&gt;。因此我们需要使国际版 Unity Hub 在启动时强制走代理。&lt;/p&gt;
+&lt;p&gt;新建一个启动脚本 &lt;code&gt;Launch_Unity_Hub.cmd&lt;/code&gt; ：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@echo off
+set HTTP_PROXY=http://127.0.0.1:7890
+set HTTPS_PROXY=http://127.0.0.1:7890
+start &quot;&quot; &quot;C:\Program Files\Unity Hub\Unity Hub.exe&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;之后通过脚本启动 Unity Hub 就不会跳转了。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2025/02/26/24K8gzVhrUCpBjx.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;国际版 Hub 没有烦人的左侧栏，还可以直接下载没有 c1 后缀的编辑器。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!IMPORTANT]&lt;/p&gt;
+&lt;p&gt;根据网友的说法，团结引擎会对资源文件对应的 &lt;strong&gt;.meta&lt;/strong&gt; 文件中的 &lt;strong&gt;guid&lt;/strong&gt; 进行加密，项目可以从国际版转到团结，但是无法从团结转回国际版。&lt;/p&gt;
+&lt;p&gt;对此说法我并没有验证。&lt;/p&gt;
+&lt;/blockquote&gt;
+</content:encoded></item><item><title>Demo-Minesweeper</title><link>https://unknowncat2048.github.io/posts/demo-minesweeper/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/demo-minesweeper/</guid><description>扫雷小游戏</description><pubDate>Thu, 09 Jan 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;介绍&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;名称：Minesweeper&lt;/li&gt;
+&lt;li&gt;更新时间：2025年1月11日&lt;/li&gt;
+&lt;li&gt;Demo 页面：&lt;a href=&quot;https://unknowncat2048.github.io/Minesweeper-Page&quot;&gt;Minesweeper-Page&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;说明：电脑端左键揭开当前格子，右键标记当前格子，再次右键取消标记；移动端需要长按进行标记&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Version notes&lt;/h1&gt;
+&lt;h2&gt;v1.1.1 notes&lt;/h2&gt;
+&lt;p&gt;更新于2025年1月11日&lt;/p&gt;
+&lt;h3&gt;:wrench: Fixes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;修复揭开周围格子时未正确处理已标记格子的问题&lt;/li&gt;
+&lt;li&gt;修复可能存在的无法触发游戏结束判断的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;:hammer_and_wrench: Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;修改主菜单标题&lt;/li&gt;
+&lt;li&gt;移动端长按标记的触发时间由 0.5s 调整为 0.3s&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;v1.1.0 notes&lt;/h2&gt;
+&lt;p&gt;更新于2025年1月9日&lt;/p&gt;
+&lt;h3&gt;:sparkles: Features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;增加彩色数字功能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;:wrench: Fixes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;修复移动端无法标记的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;:hammer_and_wrench: Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;修改主题颜色&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;v1.0.0 notes&lt;/h2&gt;
+&lt;p&gt;更新于2025年1月9日&lt;/p&gt;
+&lt;h3&gt;:sparkles: Features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;基本游戏功能&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>Demo-Sudoku</title><link>https://unknowncat2048.github.io/posts/demo-sudoku/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/demo-sudoku/</guid><description>数独小游戏</description><pubDate>Thu, 02 Jan 2025 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;介绍&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;名称：Sudoku&lt;/li&gt;
+&lt;li&gt;更新时间：2025年1月14日&lt;/li&gt;
+&lt;li&gt;Demo 页面：&lt;a href=&quot;https://unknowncat2048.github.io/Sudoku-Page&quot;&gt;Sudoku-Page&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Version notes&lt;/h1&gt;
+&lt;h2&gt;v2.0.0 notes&lt;/h2&gt;
+&lt;p&gt;更新于2025年1月14日&lt;/p&gt;
+&lt;h3&gt;:sparkles: Features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;重构项目&lt;/li&gt;
+&lt;li&gt;对手机端的界面适配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;v1.0.2 notes&lt;/h2&gt;
+&lt;p&gt;更新于2025年1月3日&lt;/p&gt;
+&lt;h3&gt;:hammer_and_wrench: Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;在主菜单界面显示版本信息与项目展示说明&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;v1.0.1 notes&lt;/h2&gt;
+&lt;p&gt;更新于2025年1月3日&lt;/p&gt;
+&lt;h3&gt;:wrench: Fixes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;修复 WebGL 无法显示中文的问题&lt;/li&gt;
+&lt;li&gt;修复游戏界面的后退按钮中的内容无法显示的问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;:hammer_and_wrench: Changes&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;移除主菜单界面中的退出按钮&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;h2&gt;v1.0.0 notes&lt;/h2&gt;
+&lt;p&gt;更新于2025年1月2日&lt;/p&gt;
+&lt;h3&gt;:sparkles: Features&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;基本游戏功能&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>Unity 编辑器扩展（3）：组件菜单栏扩展</title><link>https://unknowncat2048.github.io/posts/unity-editor-extension-3/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/unity-editor-extension-3/</guid><description>在 Unity 编辑器的组件新建菜单和组件菜单中添加自定义扩展</description><pubDate>Mon, 16 Dec 2024 11:54:00 GMT</pubDate><content:encoded>&lt;h2&gt;组件新建菜单扩展&lt;/h2&gt;
+&lt;p&gt;默认情况下，我们自己编写的脚本会被放置在 “Component &amp;gt; Scripts” 中。使用 &lt;code&gt;“[AddComponentMenu(string menuName)]”&lt;/code&gt; 特性标记脚本可以指定脚本在 Component 菜单中的路径。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[AddComponentMenu(&quot;Test/TestAddComponentMenu&quot;)]
+public class TestAddComponentMenu : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!Note]&lt;/p&gt;
+&lt;p&gt;根据官方 API 文档的说法，需要重新启动才可以生效，但是在实际使用中修改完成就可生效。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;该特性也提供另一个重载 &lt;code&gt;“[addComponentMenu(string menuName, int order)]”&lt;/code&gt; 用以对同一路径下的同级脚本进行排序，&lt;code&gt;order&lt;/code&gt; 的值越大排序越靠下。&lt;/p&gt;
+&lt;h2&gt;组件菜单扩展&lt;/h2&gt;
+&lt;h3&gt;ContextMenu&lt;/h3&gt;
+&lt;p&gt;该特性用于自定义扩展脚本在 Inspector 窗口中的右键菜单，通常用于快捷的设置数据。该特性需要标记脚本内的非静态方法。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TestMonoBehaviour : MonoBehaviour
+{
+    public int Num = 0;
+
+    [ContextMenu(&quot;Reset Num&quot;)]
+    private void ResetNum()
+    {
+        Num = 1;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;该特性接受三个参数 &lt;code&gt;“[ContextMenu(string itemName, bool isValidateFunction, int priority)]”&lt;/code&gt;，可参照&lt;a href=&quot;https://unknowncat2048.github.io/posts/unity-editor-extension-2/&quot;&gt;《Unity 编辑器扩展（2）：视图菜单栏扩展》&lt;/a&gt;。&lt;/p&gt;
+&lt;h3&gt;ContextMenuItem&lt;/h3&gt;
+&lt;p&gt;该特性可将自定义方法添加到字段的右键菜单中。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TestMonoBehaviour : MonoBehaviour
+{
+    [ContextMenuItem(&quot;Reset Num&quot;, &quot;ResetNum&quot;)]
+    public int Num = 0;
+
+    private void ResetNum()
+    {
+        Num = 1;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;该特性有两个参数，一个变量：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命名&lt;/th&gt;
+&lt;th&gt;类型&lt;/th&gt;
+&lt;th&gt;类别&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;name&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;参数&lt;/td&gt;
+&lt;td&gt;在右键菜单中的名称&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;function&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;参数&lt;/td&gt;
+&lt;td&gt;要执行的方法&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;order&lt;/td&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;td&gt;变量&lt;/td&gt;
+&lt;td&gt;在右键菜单中的排序&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre&gt;&lt;code&gt;[ContextMenuItem(string Name, string function, 属性: [order = int])]
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>Unity 编辑器扩展（2）：视图菜单栏扩展</title><link>https://unknowncat2048.github.io/posts/unity-editor-extension-2/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/unity-editor-extension-2/</guid><description>在 Unity 编辑器的顶部栏菜单、Hierarchy 窗口右键菜单、Project 窗口右键菜单中添加自定义扩展</description><pubDate>Mon, 16 Dec 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;顶部栏菜单扩展&lt;/h2&gt;
+&lt;p&gt;Unity 默认的顶部菜单栏如下图，我们可以在这里添加我们自己的工具。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2024/12/12/bg8LowY7KMjihWr.png&quot; alt=&quot;image-20241212110536096&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;使用 &lt;code&gt;MenuItem&lt;/code&gt; 特性标记一个静态方法就可以在顶部栏添加自定义工具。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using UnityEditor;
+using UnityEngine;
+
+public class TopbarExtension
+{
+    [MenuItem(&quot;Tool/Custom_1&quot;)]
+    public static void Custom_1()
+    {
+        Debug.Log(&quot;TopbarExtension : Custom_1&quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;等待编译完成后就可以在顶部栏看到我们的自定义工具，点击后就会执行 &lt;code&gt;Custom_1&lt;/code&gt; 方法。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s2.loli.net/2024/12/12/1K2aqOEocdx7p95.png&quot; alt=&quot;image-20241212150031061&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;MenuItem&lt;/code&gt; 可传入三个参数&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[MenuItem(string itemName, bool isValidateFunction, int priority)]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th&gt;类型&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;itemName&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;string&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;工具在菜单中的路径&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;isValidateFunction&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;bool&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;是否用作相同 &lt;code&gt;itemName&lt;/code&gt; 方法的验证方法&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;priority&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;int&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;工具在菜单中的优先级，默认值：1000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;itemName&lt;/h3&gt;
+&lt;p&gt;该参数接受一个 &lt;strong&gt;string&lt;/strong&gt; 类型参数，用来表示该工具在顶部栏中的路径，通过 “/” 字符分割父子级。&lt;/p&gt;
+&lt;h3&gt;isValidateFunction&lt;/h3&gt;
+&lt;p&gt;该参数接受一个 &lt;strong&gt;bool&lt;/strong&gt; 类型参数，传入 &lt;strong&gt;true&lt;/strong&gt; 时表示该方法为验证方法。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;验证方法会在具有相同 &lt;code&gt;itemName&lt;/code&gt; 方法之前执行。&lt;/li&gt;
+&lt;li&gt;验证方法必须返回 &lt;strong&gt;bool&lt;/strong&gt; 才可以生效。&lt;/li&gt;
+&lt;li&gt;具体效果为返回 false 时，&lt;code&gt;itemName&lt;/code&gt; 对应的菜单栏选项变为不可选状态。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;using UnityEditor;
+using UnityEngine;
+
+public class TopbarExtension
+{
+    [MenuItem(&quot;Tool/Custom_1&quot;, false)]
+    public static void Custom_1()
+    {
+        Debug.Log(&quot;TopbarExtension : Custom_1&quot;);
+    }
+
+    [MenuItem(&quot;Tool/Custom_1&quot;, true)]
+    public static bool Custom_2()
+    {
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;通过验证方法可以对工具执行的条件进行判断，防止在非预期的情况下运行。&lt;/p&gt;
+&lt;h3&gt;priority&lt;/h3&gt;
+&lt;p&gt;该参数接受一个 &lt;strong&gt;int&lt;/strong&gt; 类型参数，用来决定该选项在菜单栏选项中的排列位置。默认值为 1000&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;菜单列表中处于同一级的不同方法之间会比较 &lt;code&gt;priority&lt;/code&gt; 的值，有较大的值的选项会排在有较小值的选项的下面。&lt;/li&gt;
+&lt;li&gt;当两个选项的 &lt;code&gt;priority&lt;/code&gt; 的值相差超过 10(&amp;gt;=11) 时，会在两个选项之间显示一条分割线。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;快捷键&lt;/h3&gt;
+&lt;p&gt;可以在 &lt;code&gt;itemName&lt;/code&gt; 中设置该方法的快捷键。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using UnityEditor;
+using UnityEngine;
+
+public class TopbarExtension
+{
+    [MenuItem(&quot;Tool/Custom_1 %#d&quot;, false)]
+    public static void Custom_1()
+    {
+        Debug.Log(&quot;TopbarExtension : Custom_1&quot;);
+    }
+
+    [MenuItem(&quot;Tool/Custom_1 %#d&quot;, true)]
+    public static bool Custom_2()
+    {
+        return false;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上述代码我们通过一个空格字符区分路径文本和快捷键文本，为选项添加了一个快捷键。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;%#d&lt;/code&gt; 将会被解释为 &amp;lt;kbd&amp;gt;ctrl&amp;lt;/kbd&amp;gt;+&amp;lt;kbd&amp;gt;shift&amp;lt;/kbd&amp;gt;+&amp;lt;kbd&amp;gt;D&amp;lt;/kbd&amp;gt;。如果不需要特殊按键则需要以下划线开始，例如 &lt;code&gt;“Tool/Custom_1 _d”&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;Unity 支持多个特殊的按键，以下是他们的对应关系：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;快捷键文本&lt;/th&gt;
+&lt;th&gt;对应的按键&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;%&lt;/td&gt;
+&lt;td&gt;在 Windows 上表示 &amp;lt;kbd&amp;gt;ctrl&amp;lt;/kbd&amp;gt;，在 macOS 上表示 &amp;lt;kbd&amp;gt;cmd&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;#&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;shift&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;amp;&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;alt&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LEFT&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;←&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RIGHT&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;→&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;UP&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;↑&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DOWN&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;↓&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;F1 .. F12&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;F1&amp;lt;/kbd&amp;gt;..&amp;lt;kbd&amp;gt;F12&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;HOME&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;home&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;END&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;end&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PGUP&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;page up&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PGDN&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;page down&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;右键菜单扩展&lt;/h2&gt;
+&lt;h3&gt;Hierarchy 窗口右键菜单&lt;/h3&gt;
+&lt;p&gt;Hierarchy 窗口的右键菜单对应着顶部菜单栏 &lt;code&gt;GameObject&lt;/code&gt;，使用 &lt;code&gt;[MenuItem(&quot;GameObject/Custom_3&quot;)]&lt;/code&gt; 即可将方法显示在 Hierarchy 窗口的右键菜单中。&lt;/p&gt;
+&lt;h3&gt;Project 窗口右键菜单&lt;/h3&gt;
+&lt;p&gt;Project 窗口的右键菜单对应着顶部菜单栏 &lt;code&gt;Assets&lt;/code&gt;，使用 &lt;code&gt;[MenuItem(&quot;Assets/Custom_4&quot;)]&lt;/code&gt; 即可将方法显示在 Project  窗口的右键菜单中。&lt;/p&gt;
+</content:encoded></item><item><title>Unity 编辑器扩展（1）：入门</title><link>https://unknowncat2048.github.io/posts/unity-editor-extension-1/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/unity-editor-extension-1/</guid><description>初步了解 Unity 编辑器扩展</description><pubDate>Mon, 09 Dec 2024 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;Unity 允许通过自定义 &lt;code&gt;Inspector&lt;/code&gt; 和 &lt;code&gt;编辑器窗口&lt;/code&gt;  来扩展编辑器。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Unity 编辑器扩展大致分为以下几类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;菜单栏扩展
+&lt;ul&gt;
+&lt;li&gt;顶部栏菜单扩展&lt;/li&gt;
+&lt;li&gt;右键菜单扩展&lt;/li&gt;
+&lt;li&gt;组件新建菜单扩展&lt;/li&gt;
+&lt;li&gt;组件菜单扩展&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;编辑器窗口扩展
+&lt;ul&gt;
+&lt;li&gt;自定义编辑器窗口&lt;/li&gt;
+&lt;li&gt;自定义 Inspector 窗口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;工具栏扩展&lt;/li&gt;
+&lt;li&gt;Gizmos&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;编辑器相关文件需要放到相关&lt;a href=&quot;https://docs.unity.cn/cn/2020.3/Manual/SpecialFolders.html&quot;&gt;特殊文件夹&lt;/a&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Editor&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;编辑器扩展相关脚本需要放置在 &lt;code&gt;Editor&lt;/code&gt; 文件夹中，该文件夹内的脚本将以编辑器脚本的形式运行。&lt;/li&gt;
+&lt;li&gt;该文件夹内的脚本不会被打包到最终的项目中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Editor Default Resources&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;该文件夹用于存放编辑器扩展脚本要用的资源，如图片、音频等。使用 &lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/EditorGUIUtility.Load.html&quot;&gt;EditorGUIUtility.Load&lt;/a&gt; 方法从该文件夹中读取所需资源。&lt;/li&gt;
+&lt;li&gt;也可以在 &lt;code&gt;Editor&lt;/code&gt; 文件夹中创建 &lt;code&gt;Resources&lt;/code&gt; 文件夹，并将所需资源放入其中。同样使用&lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/EditorGUIUtility.Load.html&quot;&gt;EditorGUIUtility.Load&lt;/a&gt; 方法读取所需资源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Gizmos&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;用于存放 &lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/Gizmos.html&quot;&gt;Gizmos&lt;/a&gt; 所需的图片。使用 &lt;a href=&quot;https://docs.unity.cn/cn/2020.3/ScriptReference/Gizmos.DrawIcon.html&quot;&gt;Gizmos.DrawIcon&lt;/a&gt;  读取所需图片并绘制。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>如何在本地部署简单的 Git-LFS 服务</title><link>https://unknowncat2048.github.io/posts/how-to-deploy-simple-git-lfs-service-locally/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/how-to-deploy-simple-git-lfs-service-locally/</guid><description>编译并使用 lfs-test-server 在部署 Git-LFS 服务</description><pubDate>Tue, 01 Oct 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;前言&lt;/h1&gt;
+&lt;p&gt;::github{repo=&quot;git-lfs/lfs-test-server&quot;}&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;LFS Test Server is an example server that implements the &lt;a href=&quot;https://github.com/github/git-lfs/tree/master/docs/api#readme&quot;&gt;Git LFS API&lt;/a&gt;. It is intended to be used for testing the &lt;a href=&quot;https://github.com/github/git-lfs&quot;&gt;Git LFS&lt;/a&gt; client and is not in a production ready state.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/git-lfs/lfs-test-server&quot;&gt;lfs-test-server&lt;/a&gt; 目前不能用于生产，但是对于个人也足够了。&lt;/p&gt;
+&lt;p&gt;如果需要更成熟的可用于生产环境的 Git-LFS 服务可以考虑使用 &lt;a href=&quot;https://about.gitea.com&quot;&gt;Gitea&lt;/a&gt; 或 &lt;a href=&quot;https://about.gitlab.com&quot;&gt;GitLab&lt;/a&gt;。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!IMPORTANT]&lt;/p&gt;
+&lt;p&gt;本教程基于 Windows 系统&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;安装 lfs-test-server&lt;/h1&gt;
+&lt;p&gt;lfs-test-server 除最新版本（Release 0.4.0）之外都有提供已经编译好的 exe 程序，如果要使用最新版本需要自己进行编译。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!NOTE]&lt;/p&gt;
+&lt;p&gt;Go 语言官网：https://golang.google.cn&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;使用 Go installer 安装&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;go install github.com/git-lfs/lfs-test-server@latest
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;执行上面指令后，安装器会获取源码以及所需要的依赖自动进行编译，最后会将编译完成的可执行程序放在 &lt;code&gt;%GO_PATH%/bin&lt;/code&gt; 下。&lt;/p&gt;
+&lt;h1&gt;使用 lfs-test-server&lt;/h1&gt;
+&lt;h2&gt;启动 lfs-test-server&lt;/h2&gt;
+&lt;p&gt;lfs-test-server 启动后默认监听 8080 端口。在一次启动时会在程序目录下生成相关的文件与文件夹用于管理和存储文件。通过环境变量可以对 lfs-test-server 进行配置。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;配置&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;th&gt;默认值&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_LISTEN&lt;/td&gt;
+&lt;td&gt;服务器监听的地址和端口&lt;/td&gt;
+&lt;td&gt;tcp://:8080&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_HOST&lt;/td&gt;
+&lt;td&gt;服务器生成 URL 时使用的主机&lt;/td&gt;
+&lt;td&gt;localhost:8080&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_METADB&lt;/td&gt;
+&lt;td&gt;服务器用来存储元信息的数据库文件&lt;/td&gt;
+&lt;td&gt;lfs.db&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_CONTENTPATH&lt;/td&gt;
+&lt;td&gt;存放 LFS 文件的路径&lt;/td&gt;
+&lt;td&gt;lfs-content&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_ADMINUSER&lt;/td&gt;
+&lt;td&gt;管理员用户名&lt;/td&gt;
+&lt;td&gt;为空&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_ADMINPASS&lt;/td&gt;
+&lt;td&gt;管理员密码&lt;/td&gt;
+&lt;td&gt;为空&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_CERT&lt;/td&gt;
+&lt;td&gt;tls 的证书文件&lt;/td&gt;
+&lt;td&gt;为空&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_KEY&lt;/td&gt;
+&lt;td&gt;tls 密钥&lt;/td&gt;
+&lt;td&gt;为空&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_SCHEME&lt;/td&gt;
+&lt;td&gt;设置为 “https ”以覆盖默认的 http&lt;/td&gt;
+&lt;td&gt;http&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_USETUS&lt;/td&gt;
+&lt;td&gt;设置为 “true”，以启用 tusd (tus.io)tusd 可恢复上传服务器；tusd 必须位于 PATH 中，且已单独安装&lt;/td&gt;
+&lt;td&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LFS_TUSHOST&lt;/td&gt;
+&lt;td&gt;用于启动 tusd 上传服务器的主机&lt;/td&gt;
+&lt;td&gt;localhost:1080&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;创建配置文件 &lt;code&gt;config.txt&lt;/code&gt; 输入下面的内容并根据自己的需要进行配置&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;LFS_LISTEN=tcp://:8080
+LFS_HOST=localhost:8080
+LFS_METADB=lfs.db
+LFS_CONTENTPATH=lfs-content
+LFS_ADMINUSER=
+LFS_ADMINPASS=
+LFS_CERT=
+LFS_KEY=
+LFS_SCHEME=http
+LFS_USETUS=false
+LFS_TUSHOST=localhost:1080
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;创建启动脚本 &lt;code&gt;lfs-test-server.cmd&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@echo off
+setlocal enabledelayedexpansion
+
+:: 从配置文件中读取配置
+set CONFIG_FILE=config.txt
+for /f &quot;tokens=1,2 delims==&quot; %%A in (&apos;findstr /r &quot;LFS_LISTEN LFS_HOST LFS_METADB LFS_CONTENTPATH LFS_ADMINUSER LFS_ADMINPASS LFS_CERT LFS_KEY LFS_SCHEME LFS_USETUS LFS_TUSHOST&quot; &quot;%CONFIG_FILE%&quot;&apos;) do (
+    set &quot;key=%%~A&quot;
+    set &quot;value=%%~B&quot;
+    set &quot;!key!=!value!&quot;
+)
+
+:: 清理管理员凭据
+if not &quot;%1&quot;==&quot;--admin&quot; (
+    set &quot;LFS_ADMINUSER=&quot;
+    set &quot;LFS_ADMINPASS=&quot;
+)
+
+:: 启动服务
+start &quot;LFS Server&quot; lfs-test-server.exe
+
+endlocal
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在执行启动脚本且传入 &lt;code&gt;--admin&lt;/code&gt; 参数才会启用管理员账户&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;lfs-test-server.cmd --admin
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;管理 LFS-test-server&lt;/h2&gt;
+&lt;h3&gt;访问管理&lt;/h3&gt;
+&lt;p&gt;当启动 LFS 服务并启用管理员账户后，可通过 http://&amp;lt;YOUR-LFS-HOST&amp;gt;/mgmt 访问管理页面。&lt;/p&gt;
+&lt;p&gt;通过管理页面的 User 选项可新增或删除访问用户，用于提供给其他人使用。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!IMPORTANT]&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;未启用管理员账户时不会运行管理页面，此时无法访问 http://&amp;lt;YOUR-LFS-HOST&amp;gt;/mgmt&lt;/li&gt;
+&lt;li&gt;无论是否配置访问用户，Git-LFS 在进行操作时始终会要求用户输入账号和密码用于验证，在没有配置访问用户的情况下就会导致无法访问，因此至少需要配置一个访问用户&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!NOTE]&lt;/p&gt;
+&lt;p&gt;如果运行 LFS 服务时启用了管理员账户，即使没有配置访问用户，在进行 Git-LFS 操作时也可通过管理员账户通过验证。如果需要将服务暴露在公网，建议不启用管理员账户。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;文件管理&lt;/h3&gt;
+&lt;p&gt;lfs-test-server 并不提供删除文件的功能，如果确定一个文件已经不存在任何引用，并且想要删除该文件的话只能自己查找并删除对应文件。&lt;/p&gt;
+&lt;p&gt;在删除文件后使用 &lt;a href=&quot;https://github.com/br0xen/boltbrowser&quot;&gt;boltbrowser&lt;/a&gt; 打开 &lt;code&gt;lfs.db&lt;/code&gt;，找到 &lt;code&gt;objects&lt;/code&gt; 中对应的数据并删除。&lt;/p&gt;
+&lt;p&gt;::github{repo=&quot;br0xen/boltbrowser&quot;}&lt;/p&gt;
+&lt;h2&gt;断点续传&lt;/h2&gt;
+&lt;p&gt;为应对大文件在传输过程中可能遇到的网络问题，lfs-test-server 支持使用 &lt;a href=&quot;https://github.com/tus/tusd&quot;&gt;tusd &lt;/a&gt;进行断点续传。将 tusd 的二进制文件放置在路径下，修改配置文件即可&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;LFS_USETUS=true
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;::github{repo=&quot;tus/tusd&quot;}&lt;/p&gt;
+</content:encoded></item><item><title>Unity 组件扩展归档</title><link>https://unknowncat2048.github.io/posts/unity-component-extension-archive/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/unity-component-extension-archive/</guid><description>一些组件扩展</description><pubDate>Thu, 01 Aug 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;自定义摄像机 Gizmo 扩展&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+
+namespace PersonalTool
+{
+    [CustomEditor(typeof(Camera))]
+    public class CameraCustomGizmos
+    {
+        private static float topBarHeight = 118.0328f;
+
+        private static Mesh quad = null;
+
+        private static float distance;
+        private static Vector3 buttomLeft;
+        private static Vector3 buttomRight;
+        private static Vector3 topLeft;
+        private static Vector3 topRight;
+
+        [DrawGizmo(GizmoType.Selected | GizmoType.Active)]
+        private static void OnDrawGizmosSelected(Camera camera, GizmoType gizmoType)
+        {
+            if (quad is null)
+            {
+                //Library/unity default resources::Cube
+                var type = typeof(Mesh);
+                quad = AssetDatabase.LoadAllAssetsAtPath(&quot;Library/unity default resources&quot;)
+                    .Where(e =&amp;gt; type.IsAssignableFrom(e.GetType()) &amp;amp;&amp;amp; e.name == &quot;Quad&quot;).Cast&amp;lt;Mesh&amp;gt;()?.First();
+            }
+
+            distance = camera.nearClipPlane * 1.001f;
+            buttomLeft = new Vector3(0f, 0f, distance);
+            buttomRight = new Vector3(Screen.width, 0f, distance);
+            topLeft = new Vector3(0f, Screen.height, distance);
+            topRight = new Vector3(Screen.width, Screen.height, distance);
+
+            buttomLeft = camera.ScreenToWorldPoint(buttomLeft);
+            buttomRight = camera.ScreenToWorldPoint(buttomRight);
+            topLeft = camera.ScreenToWorldPoint(topLeft);
+            topRight = camera.ScreenToWorldPoint(topRight);
+
+            DrawBorderZone(camera);
+            DrawViewCenterLine();
+            DrawCenterPoint(camera);
+        }
+
+        private static void DrawBorderZone(Camera camera)
+        {
+            var topBarButtomLeft = new Vector3(0f, Screen.height - topBarHeight, distance);
+            var topBarButtomRight = new Vector3(Screen.width, Screen.height - topBarHeight, distance);
+
+            topBarButtomLeft = camera.ScreenToWorldPoint(topBarButtomLeft);
+            topBarButtomRight = camera.ScreenToWorldPoint(topBarButtomRight);
+
+            #region TopBar
+            var width = Vector3.Distance(topBarButtomLeft, topBarButtomRight);
+            var height = Vector3.Distance(topBarButtomLeft, topLeft);
+            var size = new Vector3(width, height, 1f);
+
+            Gizmos.color = new Color32(255, 0, 0, 60);
+            Gizmos.DrawMesh(quad, (topBarButtomLeft + topRight) / 2f, camera.transform.rotation, size);
+            #endregion
+
+            var downBarTopLeft = new Vector3(0f, Screen.height * 0.1f, distance);
+            var downBarTopRight = new Vector3(Screen.width, Screen.height * 0.1f, distance);
+
+            downBarTopLeft = camera.ScreenToWorldPoint(downBarTopLeft);
+            downBarTopRight = camera.ScreenToWorldPoint(downBarTopRight);
+
+            #region ButtomBar
+            width = Vector3.Distance(buttomLeft, buttomRight);
+            height = Vector3.Distance(buttomLeft, downBarTopLeft);
+            size = new Vector3(width, height, 1f);
+
+            Gizmos.color = new Color32(255, 168, 0, 60);
+            Gizmos.DrawMesh(quad, (buttomLeft + downBarTopRight) / 2f, camera.transform.rotation, size);
+            #endregion
+
+            var leftBarButtomRight = new Vector3(Screen.width * 0.1f, Screen.height * 0.1f, distance);
+            var leftBarTopRight = new Vector3(Screen.width * 0.1f, Screen.height - topBarHeight, distance);
+
+            leftBarButtomRight = camera.ScreenToWorldPoint(leftBarButtomRight);
+            leftBarTopRight = camera.ScreenToWorldPoint(leftBarTopRight);
+
+            #region LeftBar
+            width = Vector3.Distance(downBarTopLeft, leftBarButtomRight);
+            height = Vector3.Distance(downBarTopLeft, topBarButtomLeft);
+            size = new Vector3(width, height, 1f);
+
+            Gizmos.color = new Color32(255, 255, 0, 60);
+            Gizmos.DrawMesh(quad, (downBarTopLeft + leftBarTopRight) / 2f, camera.transform.rotation, size);
+            #endregion
+
+            var rightBarButtomLeft = new Vector3(Screen.width * 0.9f, Screen.height * 0.1f, distance);
+            var rightBarTopLeft = new Vector3(Screen.width * 0.9f, Screen.height - topBarHeight, distance);
+
+            rightBarButtomLeft = camera.ScreenToWorldPoint(rightBarButtomLeft);
+            rightBarTopLeft = camera.ScreenToWorldPoint(rightBarTopLeft);
+
+            #region RightBar
+            width = Vector3.Distance(rightBarButtomLeft, downBarTopRight);
+            height = Vector3.Distance(rightBarButtomLeft, rightBarTopLeft);
+            size = new Vector3(width, height, 1f);
+
+            Gizmos.color = new Color32(255, 255, 0, 60);
+            Gizmos.DrawMesh(quad, (rightBarButtomLeft + topBarButtomRight) / 2f, camera.transform.rotation, size);
+            #endregion
+        }
+
+        private static void DrawViewCenterLine()
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine((topLeft + buttomLeft) / 2f, (topRight + buttomRight) / 2f);
+            Gizmos.DrawLine((topLeft + topRight) / 2f, (buttomLeft + buttomRight) / 2f);
+        }
+
+        private static void DrawCenterPoint(Camera camera)
+        {
+            Gizmos.color = new Color32(255, 255, 0, 255);
+            var length = Vector3.Distance(buttomLeft, topRight) * 0.005f;
+            var size = new Vector3(length, length, 1f);
+            Gizmos.DrawMesh(quad, (buttomLeft + topRight) / 2f, camera.transform.rotation, size);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1&gt;文本组件扩展&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace PersonalTool
+{
+    [CustomEditor(typeof(Text))]
+    public class TextComponentExtension : UnityEditor.UI.TextEditor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            EditorGUILayout.Space();
+            if (GUILayout.Button(&quot;替换所有空格为不换行空格&quot;))
+            {
+                var sp = serializedObject.FindProperty(&quot;m_Text&quot;);
+                sp.stringValue = sp.stringValue.Replace(&quot; &quot;, &quot;\u00A0&quot;);
+                serializedObject.ApplyModifiedProperties();
+            }
+            if (GUILayout.Button(&quot;添加首行缩进&quot;))
+            {
+                var sp = serializedObject.FindProperty(&quot;m_Text&quot;);
+                if (!sp.stringValue.StartsWith(&quot;\u3000\u3000&quot;))
+                    sp.stringValue = sp.stringValue.Insert(0, &quot;\u3000\u3000&quot;);
+                sp.stringValue = Regex.Replace(sp.stringValue, @&quot;\n(?![\r\n\u3000])&quot;, &quot;\n\u3000\u3000&quot;);
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>Unity 编辑器扩展归档</title><link>https://unknowncat2048.github.io/posts/unity-editor-extension-archive/</link><guid isPermaLink="true">https://unknowncat2048.github.io/posts/unity-editor-extension-archive/</guid><description>一些编辑器扩展</description><pubDate>Thu, 01 Aug 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;曲线工具&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;using System.Collections;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
+
+public class CurveTool : EditorWindow
+{
+	private AnimationCurve curve;
+
+    private string target_Str = &quot;&quot;;
+
+	[MenuItem(&quot;工具/曲线工具&quot;)]
+    public static void OpenWindow()
+	{
+		GetWindow&amp;lt;CurveTool&amp;gt;(&quot;曲线工具&quot;);
+    }
+
+	private void OnGUI()
+	{
+		GUILayout.Space(20f);
+		EditorGUILayout.CurveField(curve);
+
+		GUILayout.Space(20f);
+		if (GUILayout.Button(&quot;生成&quot;))
+		{
+			target_Str = &quot;&quot;;
+			target_Str += $&quot;AnimationCurve curve;\n&quot;;
+			target_Str += $&quot;Keyframe[] keyframes = new Keyframe[{curve.length}];\n&quot;;
+			for (int i = 0; i &amp;lt; curve.length; i++)
+				target_Str += $&quot;keyframes[{i}] = new Keyframe({curve.keys[i].time}f, {curve.keys[i].value}f, {curve.keys[i].inTangent}f, {curve.keys[i].outTangent}f, {curve.keys[i].inWeight}f, {curve.keys[i].outWeight}f);\n&quot;;
+			target_Str += $&quot;curve = new AnimationCurve(keyframes);&quot;;
+		}
+
+		GUILayout.Space(20f);
+		target_Str = GUILayout.TextArea(target_Str);
+
+		if (GUILayout.Button(&quot;复原&quot;))
+		{
+			MatchCollection mc = Regex.Matches(target_Str, @&quot;-*?\d+(\.\d+)*(?=f)&quot;);
+			List&amp;lt;Keyframe&amp;gt; keys = new List&amp;lt;Keyframe&amp;gt;();
+            Keyframe key = new Keyframe();
+            for (int i = 0; i &amp;lt; mc.Count; i++)
+            {
+                switch (i % 6)
+                {
+                    case 0:
+                        key = new Keyframe();
+                        key.time = float.Parse(mc[i].Value);
+						break;
+
+                    case 1:
+                        key.value = float.Parse(mc[i].Value);
+                        break;
+
+                    case 2:
+                        key.inTangent = float.Parse(mc[i].Value);
+                        break;
+
+                    case 3:
+                        key.outTangent = float.Parse(mc[i].Value);
+                        break;
+
+                    case 4:
+                        key.inWeight = float.Parse(mc[i].Value);
+                        break;
+
+                    case 5:
+                        key.outWeight = float.Parse(mc[i].Value);
+                        keys.Add(key);
+                        break;
+                }
+            }
+			curve = new AnimationCurve(keys.ToArray());
+        }
+	}
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1&gt;正则测试工具&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
+
+namespace PersonalTool
+{
+    public class RegexTestTool : EditorWindow
+    {
+        public static RegexTestTool Tool;
+
+        private string regexStr;
+        private Vector2 scrollPos = Vector2.zero;
+
+        private string fileString;
+        private MatchCollection matches = null;
+        private string[] splits = null;
+
+        private string coverStr = &quot;&quot;;
+
+        private int preFileType = 0;
+        private int fileType = 0;
+
+        private string filename = &quot;&quot;;
+        private string fileID = &quot;&quot;;
+
+        private bool isTrans = true;
+
+        [MenuItem(&quot;工具/正则测试工具&quot;)]
+        private static void OpenWindow()
+        {
+            Tool = GetWindow&amp;lt;RegexTestTool&amp;gt;(&quot;正则测试工具&quot;);
+            Tool.Show();
+        }
+
+        private void OnEnable()
+        {
+            using (StreamReader sr = new StreamReader(Application.dataPath + &quot;&amp;lt;FILE_PATH&amp;gt;&quot;))
+            {
+                fileString = sr.ReadToEnd();
+            }
+        }
+
+        private void OnGUI()
+        {
+            GUILayout.Label(&quot;正则表达式&quot;);
+            regexStr = GUILayout.TextArea(regexStr);
+            EditorGUILayout.BeginHorizontal();
+            fileType = GUILayout.Toolbar(fileType, new string[] { &quot;自定义文本&quot;, &quot;脚本&quot;, &quot;StepScript&quot; });
+            if (preFileType != fileType)
+            {
+                coverStr = &quot;&quot;;
+                fileID = &quot;&quot;;
+                preFileType = fileType;
+            }
+            EditorGUILayout.EndHorizontal();
+            switch (fileType)
+            {
+                case 0:
+                    GUILayout.Label(&quot;覆盖测试文本&quot;);
+                    coverStr = GUILayout.TextArea(coverStr);
+                    break;
+
+                case 1:
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label(&quot;脚本名称&quot;);
+                    filename = GUILayout.TextField(filename);
+                    if (GUILayout.Button(&quot;确定&quot;))
+                    {
+                        if (CheckInput(filename, out string id))
+                        {
+                            string filePath = Application.dataPath + $&quot;&amp;lt;FILE_PATH&amp;gt;&quot;;
+                            if (File.Exists(filePath))
+                            {
+                                fileID = id;
+                                coverStr = File.ReadAllText(filePath);
+                            }
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
+                    GUILayout.Label($&quot;当前脚本：{(fileID == &quot;&quot; ? &quot;&amp;lt;FILE_NAME&amp;gt;&quot; : fileID)}&quot;);
+                    break;
+
+                case 2:
+                    if (File.Exists(Application.dataPath + $&quot;/.StepEditorProgram/StepScript.txt&quot;))
+                    {
+                        coverStr = File.ReadAllText(Application.dataPath + $&quot;/.StepEditorProgram/StepScript.txt&quot;);
+                    }
+                    GUILayout.Label($&quot;StepScript 加载{(coverStr == &quot;&quot; ? &quot;失败&quot; : &quot;成功&quot;)}&quot;);
+                    isTrans = GUILayout.Toggle(isTrans, &quot;是否转义回正常符号&quot;);
+                    break;
+            }
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button(&quot;Match&quot;))
+            {
+                if (regexStr == null || regexStr == &quot;&quot;) return;
+                matches = null;
+                splits = null;
+                matches = Regex.Matches(coverStr != &quot;&quot; ? coverStr : fileString, regexStr, RegexOptions.ExplicitCapture);
+                //var obj = AssetDatabase.LoadAssetAtPath&amp;lt;Object&amp;gt;(&quot;&amp;lt;FILE_PATH&amp;gt;&quot;);
+                //Selection.activeObject = obj;
+                //EditorGUIUtility.PingObject(obj);
+                //Regex.Match(&quot;12&quot;, @&quot;{[^{}]*(((?&apos;Open&apos;{)[^{}]*)+((?&apos;-Open&apos;})[^{}]*)+)*(?(Open)(?!))}&quot;);
+                //Regex.Match(&quot;12&quot;, @&quot;[\x20\t]+case\s+\d+\s*:[\s\S]*?break;&quot;);
+                //Regex.Match(&quot;12&quot;, @&quot;public\s+(async\s+)?override\s+(async\s+)?void\s+(command(Start|Update|End))[^{]*?{((?&amp;lt;open&amp;gt;{)|(?&amp;lt;-open&amp;gt;})|[^{}])*(?(open)(?!))}\s*(#HH#)+&quot;);
+                //Regex.Match(&quot;12&quot;, @&quot;(?&amp;lt;=#HH#)\s*switch\s*\(StepController\.Instance\.currentIndex\)[^{]*?{((?&amp;lt;open&amp;gt;{)|(?&amp;lt;-open&amp;gt;})|[^{}])*(?(open)(?!))}\s*(#HH#)+&quot;);
+            }
+            if (GUILayout.Button(&quot;Split&quot;))
+            {
+                if (regexStr == null || regexStr == &quot;&quot;) return;
+                matches = null;
+                splits = null;
+                splits = Regex.Split(coverStr != &quot;&quot; ? coverStr : fileString, regexStr, RegexOptions.ExplicitCapture);
+            }
+            EditorGUILayout.EndHorizontal();
+            if (GUILayout.Button(&quot;清除&quot;))
+            {
+                matches = null;
+                splits = null;
+            }
+            if (matches != null &amp;amp;&amp;amp; matches.Count != 0)
+            {
+                scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+                foreach (Match m in matches)
+                {
+                    string temp = &quot;&quot;;
+                    if (isTrans)
+                    {
+                        temp = m.Value.Replace(&quot;#HH#&quot;, &quot;\n&quot;);
+                        temp = temp.Replace(&quot;#SYH#&quot;, &quot;\&quot;&quot;);
+                    }
+                    EditorGUILayout.TextArea(isTrans ? temp : m.Value);
+                }
+                EditorGUILayout.EndScrollView();
+            }
+            if (splits != null &amp;amp;&amp;amp; splits.Length != 0)
+            {
+                scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+                foreach (string s in splits)
+                {
+                    string temp = &quot;&quot;;
+                    if (isTrans)
+                    {
+                        temp = s.Replace(&quot;#HH#&quot;, &quot;\n&quot;);
+                        temp = temp.Replace(&quot;#SYH#&quot;, &quot;\&quot;&quot;);
+                    }
+                    EditorGUILayout.TextArea(isTrans ? temp : s);
+                }
+                EditorGUILayout.EndScrollView();
+            }
+        }
+
+        private bool CheckInput(string inputStr, out string id)
+        {
+            id = null;
+            if (Regex.IsMatch(inputStr, @&quot;^[Ee]+\d+[Cc]+\d+$&quot;))
+            {
+                id = Regex.Replace(inputStr, @&quot;[Ee]+&quot;, &quot;E&quot;);
+                id = Regex.Replace(id, @&quot;[Cc]+&quot;, &quot;C&quot;);
+                return true;
+            }
+            return false;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1&gt;文件创建扩展&lt;/h1&gt;
+&lt;pre&gt;&lt;code&gt;using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
+
+namespace PersonalTool.FileExtension
+{
+    public class FileCreateExtension : EditorWindow
+    {
+        private const string MLAB_SCRIPT_TEMPLATE_PATH = &quot;Assets/Editor/PersonalTool/FileExtension/MLabScriptTemplate.txt&quot;;
+        [MenuItem(&quot;Assets/Create/MLab Script (.cs)&quot;, false, 31)]
+        public static void CreateFile_MLabScript()
+        {
+            string filePath = AssetDatabase.GenerateUniqueAssetPath(GetSelectedPathOrFallback() + &quot;NewMLabScript.cs&quot;);
+            ProjectWindowUtil.CreateAssetWithContent(filePath, File.ReadAllText(MLAB_SCRIPT_TEMPLATE_PATH), EditorGUIUtility.FindTexture(&quot;d_cs Script Icon&quot;));
+        }
+
+        private const string NORMAL_SCRIPT_TEMPLATE_PATH = &quot;Assets/Editor/PersonalTool/FileExtension/NormalScriptTemplate.txt&quot;;
+        [MenuItem(&quot;Assets/Create/Normal Script (.cs)&quot;, false, 31)]
+        public static void CreateFile_NormalScript()
+        {
+            string filePath = AssetDatabase.GenerateUniqueAssetPath(GetSelectedPathOrFallback() + &quot;NewNormalScript.cs&quot;);
+            ProjectWindowUtil.CreateAssetWithContent(filePath, File.ReadAllText(NORMAL_SCRIPT_TEMPLATE_PATH), EditorGUIUtility.FindTexture(&quot;d_cs Script Icon&quot;));
+        }
+
+        [MenuItem(&quot;Assets/Create/Text Asset (.txt)&quot;, false, 31)]
+        public static void CreateFile_TextAsset()
+        {
+            string filePath = AssetDatabase.GenerateUniqueAssetPath(GetSelectedPathOrFallback() + &quot;New Text Asset.txt&quot;);
+            ProjectWindowUtil.CreateAssetWithContent(filePath, &quot;&quot;, EditorGUIUtility.FindTexture(&quot;d_TextAsset Icon&quot;));
+        }
+
+        private static string GetSelectedPathOrFallback()
+        {
+            string path = &quot;Assets&quot;;
+            foreach (UnityEngine.Object obj in Selection.GetFiltered&amp;lt;UnityEngine.Object&amp;gt;(SelectionMode.Assets))
+            {
+                path = AssetDatabase.GetAssetPath(obj);
+                if (!string.IsNullOrEmpty(path) &amp;amp;&amp;amp; File.Exists(path))
+                {
+                    path = Path.GetDirectoryName(path);
+                    break;
+                }
+            }
+            return path + &quot;/&quot;;
+        }
+    }
+
+    public class CustomFileProcessor : UnityEditor.AssetModificationProcessor
+    {
+        public const string CompanyName = &quot;moolsnet&quot;;
+        public const string Author = &quot;请署名&quot;;
+        public const string Version = &quot;1.0&quot;;
+
+        private static void OnWillCreateAsset(string path)
+        {
+            path = path.Replace(&quot;.meta&quot;, &quot;&quot;);
+            if (!path.EndsWith(&quot;.cs&quot;)) return;
+
+            string content = File.ReadAllText(path);
+            if (!Regex.IsMatch(content, @&quot;#CutsomClassName#&quot;)) return;
+
+            content = ReplaceKeywords(content, path);
+            File.WriteAllText(path, content);
+
+            AssetDatabase.Refresh();
+        }
+
+        public static string ReplaceKeywords(string input, string filePath)
+        {
+            input = input.Replace(&quot;#FileName#&quot;, Path.GetFileName(filePath));
+            input = input.Replace(&quot;#CompanyName#&quot;, CompanyName);
+            input = input.Replace(&quot;#Author#&quot;, Author);
+            input = input.Replace(&quot;#CreateTime#&quot;, DateTime.Now.ToString(&quot;F&quot;));
+            input = input.Replace(&quot;#Version#&quot;, Version);
+            input = input.Replace(&quot;#UnityVersion#&quot;, Application.unityVersion);
+            input = input.Replace(&quot;#CutsomClassName#&quot;, Path.GetFileNameWithoutExtension(filePath));
+            return input;
+        } 
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item></channel></rss>
