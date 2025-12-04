@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /_astro/
+
+Sitemap: https://blog.unknowncat2048.top/sitemap-index.xml
