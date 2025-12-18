@@ -1,0 +1,33 @@
+name: cleanup_deployment
+
+on:
+    workflow_run:
+        workflows: [pages build and deployment]
+        types: [completed]
+
+    workflow_dispatch:
+
+jobs:
+    cleanup_deployments:
+      runs-on: ubuntu-latest
+
+      env:
+        GH_TOKEN: ${{ secrets.DELETE_DEPLOYMENTS_TOKEN }}
+
+      steps:
+        - name: cleanup
+          id: deployments
+          run: |
+            deployments=$(gh api repos/${{ github.repository }}/deployments --jq '.[] | {id: .id, statuses_url: .statuses_url}')
+            
+            for deployment in $(echo "$deployments" | jq -c '.'); do
+              id=$(echo "$deployment" | jq -r '.id')
+              statuses_url=$(echo "$deployment" | jq -r '.statuses_url')
+              state=$(gh api $statuses_url --jq '.[0].state')
+  
+              if [ "$state" != "success" ]; then
+                echo "Deleting deployment $id with state $state"
+                gh api repos/${{ github.repository }}/deployments/$id -X DELETE
+              fi
+            done
+    
