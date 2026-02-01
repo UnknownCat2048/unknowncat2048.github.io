@@ -1,0 +1,23 @@
+name: cleanup_wlroflow_runs
+
+on:
+    workflow_run:
+        workflows: [pages build and deployment]
+        types: [requested]
+
+    workflow_dispatch:
+
+jobs:
+    cleanup_workflow_runs:
+      runs-on: ubuntu-latest
+      permissions:
+        actions: write
+        contents: read
+      steps:
+        - name: Delete workflow runs for current repo
+          uses: Mattraks/delete-workflow-runs@v2
+          with:
+            token: ${{ secrets.DELETE_WORKFLOW_RUNS_TOKEN }}
+            repository: ${{ github.repository }}
+            retain_days: 0
+            keep_minimum_runs: 0
